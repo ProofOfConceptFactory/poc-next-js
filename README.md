@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Hello from Next.js!👋
+========================
 
-## Getting Started
+The "Hello from Next.js!👋" application is just a starter to show a minimalist Next.js app.
 
-First, run the development server:
+Requirements
+------------
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+* [Docker Desktop][1]
+
+Installation
+------------
+
+Clone this repository:
+
+```console
+https://github.com/abdounikarim/poc-next-js
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Go on the project root folder:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```console
+cd poc-next-js/
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Execute this command to launch docker container:
 
-## Learn More
+```console
+docker compose -f docker/compose.yaml up -d --build
+```
 
-To learn more about Next.js, take a look at the following resources:
+Install JavaScript dependencies:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```console
+docker compose -f docker/compose.yaml exec node pnpm install
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Usage
+-----
 
-## Deploy on Vercel
+There's no need to configure anything before running the application. There are
+2 different ways of running this application depending on your needs:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Option 1. Run the application in dev mode**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Start the application using the dev server:
+
+```console
+docker compose -f docker/compose.yaml exec node pnpm dev
+```
+
+Then access the application in your browser at the given URL (<http://localhost:3000> by default).
+
+**Option 2. Run the application in prod mode**
+
+```console
+docker compose -f docker/compose.yaml exec node pnpm build
+```
+You now have your fresh JavaScript files for production 🚀.
+You can check everything is OK by opening the [Next production][2] directory and navigate on your application by opening the [index.html][3] file.
+
+Tests
+-----
+
+Install Cypress dependencies:
+
+```console
+docker compose -f docker/compose.yaml exec node pnpm cypress install
+```
+
+Execute this command to run tests:
+
+```console
+docker compose -f docker/compose.yaml exec node pnpm cypress run
+```
+
+[1]: https://www.docker.com/products/docker-desktop/
+[2]: ./.next/server/app
+[3]: ./.next/server/app/index.html
