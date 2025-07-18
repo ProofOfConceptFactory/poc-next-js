@@ -1,0 +1,42 @@
+# Simple workflow for deploying static content to GitHub Pages
+name: GitHub Pages
+
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: [ main ]
+  # Runs on pull requests based on the default branch
+  pull_request:
+    branches: [ main ]
+
+# Sets the GITHUB_TOKEN permissions to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 10
+          run_install: false
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: latest
+          cache: 'pnpm'
+      - name: Install dependencies
+        #env:
+          #NODE_OPTIONS: "--max_old_space_size=4096"
+        run: pnpm install
+      - name: Run dev server in background
+        run: pnpm dev &
+      - name: Install Cypress
+        run: pnpm cypress install
+      - name: Run tests
+        run: pnpm cypress run
