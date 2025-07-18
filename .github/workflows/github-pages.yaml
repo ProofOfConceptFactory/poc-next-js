@@ -28,11 +28,11 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: 22 # latest
+          node-version: latest
           cache: 'pnpm'
       - name: Install dependencies
-        #env:
-          #NODE_OPTIONS: "--max_old_space_size=4096"
+        env:
+          NODE_OPTIONS: "--max_old_space_size=4096"
         run: pnpm install
       - name: Run dev server in background
         run: pnpm dev &
