@@ -30,12 +30,20 @@ jobs:
         with:
           node-version: 22 #latest
           cache: 'pnpm'
+      - name: Install mkcert latest version and generate certificates
+        run: |
+          LATEST_VERSION=$(curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest | jq -r '.tag_name')
+          curl -L -o mkcert "https://github.com/FiloSottile/mkcert/releases/download/${LATEST_VERSION}/mkcert-${LATEST_VERSION}-linux-amd64" -o mkcert
+          chmod +x mkcert
+          ./mkcert -install
+          mkdir -p certs
+          ./mkcert -key-file certs/poc-next-js.key.pem -cert-file certs/poc-next-js.crt.pem localhost
       - name: Install dependencies
         env:
           NODE_OPTIONS: "--max_old_space_size=4096"
         run: pnpm install
       - name: Run dev server in background
-        run: pnpm dev &
+        run: pnpm dev --experimental-https --experimental-https-key certs/poc-next-js.key.pem --experimental-https-cert certs/poc-next-js.crt.pem &
       - name: Install Cypress
         run: pnpm cypress install
       - name: Run tests
